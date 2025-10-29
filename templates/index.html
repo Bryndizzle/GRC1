@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grassroots Coach - Football Coaching Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚽ Grassroots Coach</h1>
+            <p class="tagline">Your AI-Powered Football Coaching Assistant</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Tab Navigation -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="chat">General Advice</button>
+                <button class="tab-btn" data-tab="training">Training Plan</button>
+                <button class="tab-btn" data-tab="drills">Drill Suggestions</button>
+                <button class="tab-btn" data-tab="tactics">Tactical Advice</button>
+            </div>
+
+            <!-- Chat Tab -->
+            <div id="chat" class="tab-content active">
+                <div class="chat-container">
+                    <div id="chatMessages" class="chat-messages">
+                        <div class="message bot-message">
+                            <p>Hello! I'm Grassroots Coach, your AI football coaching assistant. How can I help you today?</p>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <div class="context-inputs">
+                            <input type="text" id="chatAgeGroup" placeholder="Age group (e.g., U10)" class="small-input">
+                            <select id="chatSkillLevel" class="small-input">
+                                <option value="">Skill Level</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <textarea id="chatInput" placeholder="Ask me anything about coaching..." rows="3"></textarea>
+                            <button id="chatSend" class="btn-primary">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Plan Tab -->
+            <div id="training" class="tab-content">
+                <div class="form-container">
+                    <h2>Generate Training Session Plan</h2>
+                    <form id="trainingForm">
+                        <div class="form-group">
+                            <label for="ageGroup">Age Group</label>
+                            <input type="text" id="ageGroup" placeholder="e.g., U10, U14, U18" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="skillLevel">Skill Level</label>
+                            <select id="skillLevel" required>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="focusArea">Focus Area</label>
+                            <input type="text" id="focusArea" placeholder="e.g., passing, shooting, defending" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="duration">Session Duration (minutes)</label>
+                            <input type="number" id="duration" value="60" min="30" max="120" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Generate Plan</button>
+                    </form>
+                    <div id="trainingResult" class="result-container"></div>
+                </div>
+            </div>
+
+            <!-- Drills Tab -->
+            <div id="drills" class="tab-content">
+                <div class="form-container">
+                    <h2>Get Drill Suggestions</h2>
+                    <form id="drillsForm">
+                        <div class="form-group">
+                            <label for="drillSkill">Skill to Practice</label>
+                            <input type="text" id="drillSkill" placeholder="e.g., dribbling, passing, shooting" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="drillPlayers">Number of Players</label>
+                            <input type="number" id="drillPlayers" value="10" min="1" max="30" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="drillEquipment">Available Equipment (comma-separated)</label>
+                            <input type="text" id="drillEquipment" placeholder="e.g., cones, balls, bibs, goals">
+                        </div>
+                        <button type="submit" class="btn-primary">Get Drills</button>
+                    </form>
+                    <div id="drillsResult" class="result-container"></div>
+                </div>
+            </div>
+
+            <!-- Tactics Tab -->
+            <div id="tactics" class="tab-content">
+                <div class="form-container">
+                    <h2>Tactical Advice</h2>
+                    <form id="tacticsForm">
+                        <div class="form-group">
+                            <label for="formation">Formation</label>
+                            <select id="formation" required>
+                                <option value="4-4-2">4-4-2</option>
+                                <option value="4-3-3">4-3-3</option>
+                                <option value="3-5-2">3-5-2</option>
+                                <option value="4-2-3-1">4-2-3-1</option>
+                                <option value="3-4-3">3-4-3</option>
+                                <option value="5-3-2">5-3-2</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="situation">Game Situation / Question</label>
+                            <textarea id="situation" rows="4" placeholder="Describe the tactical situation or ask your question..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Get Advice</button>
+                    </form>
+                    <div id="tacticsResult" class="result-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Grassroots Coach - Powered by AI | For educational purposes</p>
+        </footer>
+    </div>
+
+    <div id="loading" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Thinking...</p>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
