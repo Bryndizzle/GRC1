@@ -20,6 +20,7 @@
                 <button class="tab-btn" data-tab="training">Training Plan</button>
                 <button class="tab-btn" data-tab="drills">Drill Suggestions</button>
                 <button class="tab-btn" data-tab="tactics">Tactical Advice</button>
+                <button class="tab-btn" data-tab="stopwatch">Stopwatch</button>
             </div>
 
             <!-- Chat Tab -->
@@ -125,6 +126,31 @@
                         <button type="submit" class="btn-primary">Get Advice</button>
                     </form>
                     <div id="tacticsResult" class="result-container"></div>
+                </div>
+            </div>
+
+            <!-- Stopwatch Tab -->
+            <div id="stopwatch" class="tab-content">
+                <div class="stopwatch-container">
+                    <h2>Training Stopwatch</h2>
+                    <p class="stopwatch-description">Time your drills, exercises, and training sessions</p>
+
+                    <div class="stopwatch-display">
+                        <div id="stopwatchTime" class="stopwatch-time">00:00.00</div>
+                    </div>
+
+                    <div class="stopwatch-controls">
+                        <button id="startBtn" class="stopwatch-btn btn-start">Start</button>
+                        <button id="lapBtn" class="stopwatch-btn btn-lap" disabled>Lap</button>
+                        <button id="resetBtn" class="stopwatch-btn btn-reset">Reset</button>
+                    </div>
+
+                    <div id="lapsContainer" class="laps-container">
+                        <h3>Lap Times</h3>
+                        <div id="lapsList" class="laps-list">
+                            <p class="no-laps">No lap times recorded yet</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
