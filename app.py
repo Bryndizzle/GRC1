@@ -9,8 +9,9 @@ load_dotenv()
 app = Flask(__name__)
 CORS(app)
 
-# Initialize the GPT wrapper
-coach_gpt = GrassrootsCoachGPT(api_key=os.getenv('OPENAI_API_KEY'))
+# Initialize the GPT wrapper (optional - only needed for AI features)
+api_key = os.getenv('OPENAI_API_KEY')
+coach_gpt = GrassrootsCoachGPT(api_key=api_key) if api_key else None
 
 @app.route('/')
 def index():
@@ -21,6 +22,9 @@ def index():
 def chat():
     """Handle chat requests with the coaching GPT"""
     try:
+        if not coach_gpt:
+            return jsonify({'error': 'OpenAI API key not configured. Set OPENAI_API_KEY in .env file.'}), 503
+
         data = request.json
         message = data.get('message', '')
         context = data.get('context', {})
@@ -38,6 +42,9 @@ def chat():
 def training_plan():
     """Generate a training session plan"""
     try:
+        if not coach_gpt:
+            return jsonify({'error': 'OpenAI API key not configured. Set OPENAI_API_KEY in .env file.'}), 503
+
         data = request.json
         age_group = data.get('age_group', '')
         skill_level = data.get('skill_level', 'beginner')
@@ -54,6 +61,9 @@ def training_plan():
 def drill_suggestion():
     """Get drill suggestions based on criteria"""
     try:
+        if not coach_gpt:
+            return jsonify({'error': 'OpenAI API key not configured. Set OPENAI_API_KEY in .env file.'}), 503
+
         data = request.json
         skill = data.get('skill', '')
         players = data.get('players', 10)
@@ -69,6 +79,9 @@ def drill_suggestion():
 def tactical_advice():
     """Get tactical advice for game situations"""
     try:
+        if not coach_gpt:
+            return jsonify({'error': 'OpenAI API key not configured. Set OPENAI_API_KEY in .env file.'}), 503
+
         data = request.json
         formation = data.get('formation', '')
         situation = data.get('situation', '')
