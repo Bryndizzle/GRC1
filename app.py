@@ -3,14 +3,16 @@ from flask_cors import CORS
 import os
 from dotenv import load_dotenv
 from gpt_wrapper import GrassrootsCoachGPT
+from seo_specialist_agent import OffsiteSEOSpecialistAgent
 
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
-# Initialize the GPT wrapper
+# Initialize the GPT wrappers
 coach_gpt = GrassrootsCoachGPT(api_key=os.getenv('OPENAI_API_KEY'))
+seo_agent = OffsiteSEOSpecialistAgent(api_key=os.getenv('OPENAI_API_KEY'))
 
 @app.route('/')
 def index():
@@ -79,10 +81,207 @@ def tactical_advice():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+# ==================== SEO SPECIALIST AGENT ROUTES ====================
+
+@app.route('/api/seo/chat', methods=['POST'])
+def seo_chat():
+    """Handle chat requests with the SEO Specialist Agent"""
+    try:
+        data = request.json
+        message = data.get('message', '')
+        context = data.get('context', {})
+
+        if not message:
+            return jsonify({'error': 'No message provided'}), 400
+
+        response = seo_agent.get_seo_advice(message, context)
+        return jsonify({'response': response})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/seo/link-building-strategy', methods=['POST'])
+def link_building_strategy():
+    """Generate a comprehensive link building strategy"""
+    try:
+        data = request.json
+        business_name = data.get('business_name', '')
+        industry = data.get('industry', '')
+        target_pages = data.get('target_pages', [])
+        competitors = data.get('competitors', [])
+
+        if not business_name or not industry:
+            return jsonify({'error': 'Business name and industry are required'}), 400
+
+        strategy = seo_agent.generate_link_building_strategy(
+            business_name, industry, target_pages, competitors
+        )
+        return jsonify({'strategy': strategy})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/seo/digital-pr-campaign', methods=['POST'])
+def digital_pr_campaign():
+    """Generate a digital PR campaign plan"""
+    try:
+        data = request.json
+        business_name = data.get('business_name', '')
+        industry = data.get('industry', '')
+        unique_angle = data.get('unique_angle', '')
+        target_audience = data.get('target_audience', '')
+        budget_level = data.get('budget_level', 'low')
+
+        if not business_name or not industry:
+            return jsonify({'error': 'Business name and industry are required'}), 400
+
+        campaign = seo_agent.generate_digital_pr_campaign(
+            business_name, industry, unique_angle, target_audience, budget_level
+        )
+        return jsonify({'campaign': campaign})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/seo/community-strategy', methods=['POST'])
+def community_strategy():
+    """Generate a community visibility strategy for Reddit, Quora, YouTube, etc."""
+    try:
+        data = request.json
+        business_name = data.get('business_name', '')
+        industry = data.get('industry', '')
+        target_platforms = data.get('target_platforms', ['Reddit', 'Quora', 'YouTube'])
+        products_services = data.get('products_services', '')
+
+        if not business_name or not industry:
+            return jsonify({'error': 'Business name and industry are required'}), 400
+
+        strategy = seo_agent.generate_community_strategy(
+            business_name, industry, target_platforms, products_services
+        )
+        return jsonify({'strategy': strategy})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/seo/aeo-strategy', methods=['POST'])
+def aeo_strategy():
+    """Generate an Answer Engine Optimization (AEO) strategy for AI visibility"""
+    try:
+        data = request.json
+        business_name = data.get('business_name', '')
+        industry = data.get('industry', '')
+        key_topics = data.get('key_topics', [])
+        target_queries = data.get('target_queries', [])
+
+        if not business_name or not industry:
+            return jsonify({'error': 'Business name and industry are required'}), 400
+
+        strategy = seo_agent.generate_aeo_strategy(
+            business_name, industry, key_topics, target_queries
+        )
+        return jsonify({'strategy': strategy})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/seo/reputation-audit', methods=['POST'])
+def reputation_audit():
+    """Generate a brand reputation audit and improvement plan"""
+    try:
+        data = request.json
+        business_name = data.get('business_name', '')
+        industry = data.get('industry', '')
+        known_issues = data.get('known_issues', '')
+
+        if not business_name or not industry:
+            return jsonify({'error': 'Business name and industry are required'}), 400
+
+        audit = seo_agent.generate_reputation_audit(
+            business_name, industry, known_issues
+        )
+        return jsonify({'audit': audit})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/seo/listicle-strategy', methods=['POST'])
+def listicle_strategy():
+    """Generate a strategy for getting featured in listicles and roundups"""
+    try:
+        data = request.json
+        business_name = data.get('business_name', '')
+        industry = data.get('industry', '')
+        product_category = data.get('product_category', '')
+        key_differentiators = data.get('key_differentiators', '')
+
+        if not business_name or not industry:
+            return jsonify({'error': 'Business name and industry are required'}), 400
+
+        strategy = seo_agent.generate_listicle_roundup_strategy(
+            business_name, industry, product_category, key_differentiators
+        )
+        return jsonify({'strategy': strategy})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/seo/report', methods=['POST'])
+def seo_report():
+    """Generate an offsite SEO report template and recommendations"""
+    try:
+        data = request.json
+        business_name = data.get('business_name', '')
+        current_metrics = data.get('current_metrics', None)
+        goals = data.get('goals', None)
+
+        if not business_name:
+            return jsonify({'error': 'Business name is required'}), 400
+
+        report = seo_agent.generate_offsite_seo_report(
+            business_name, current_metrics, goals
+        )
+        return jsonify({'report': report})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/seo/outreach-templates', methods=['POST'])
+def outreach_templates():
+    """Generate customized outreach templates for various SEO activities"""
+    try:
+        data = request.json
+        outreach_type = data.get('outreach_type', 'guest_post')
+        business_name = data.get('business_name', '')
+        industry = data.get('industry', '')
+        context = data.get('context', '')
+
+        if not business_name or not industry:
+            return jsonify({'error': 'Business name and industry are required'}), 400
+
+        templates = seo_agent.generate_outreach_templates(
+            outreach_type, business_name, industry, context
+        )
+        return jsonify({'templates': templates})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+# ==================== HEALTH CHECK ====================
+
 @app.route('/api/health', methods=['GET'])
 def health():
     """Health check endpoint"""
-    return jsonify({'status': 'healthy', 'app': 'Grassroots Coach'})
+    return jsonify({'status': 'healthy', 'app': 'Grassroots Coach', 'agents': ['coaching', 'seo']})
 
 if __name__ == '__main__':
     port = int(os.getenv('FLASK_PORT', 5000))

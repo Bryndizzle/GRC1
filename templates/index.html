@@ -20,6 +20,7 @@
                 <button class="tab-btn" data-tab="training">Training Plan</button>
                 <button class="tab-btn" data-tab="drills">Drill Suggestions</button>
                 <button class="tab-btn" data-tab="tactics">Tactical Advice</button>
+                <button class="tab-btn seo-tab" data-tab="seo">SEO Specialist</button>
             </div>
 
             <!-- Chat Tab -->
@@ -125,6 +126,317 @@
                         <button type="submit" class="btn-primary">Get Advice</button>
                     </form>
                     <div id="tacticsResult" class="result-container"></div>
+                </div>
+            </div>
+
+            <!-- SEO Specialist Tab -->
+            <div id="seo" class="tab-content">
+                <div class="seo-container">
+                    <div class="seo-header">
+                        <h2>Offsite SEO Specialist Agent</h2>
+                        <p class="seo-tagline">Grow your organic visibility and authority through high-impact off-page SEO strategies</p>
+                    </div>
+
+                    <!-- SEO Sub-tabs Navigation -->
+                    <div class="seo-subtabs">
+                        <button class="seo-subtab-btn active" data-seotab="seo-chat">SEO Chat</button>
+                        <button class="seo-subtab-btn" data-seotab="link-building">Link Building</button>
+                        <button class="seo-subtab-btn" data-seotab="digital-pr">Digital PR</button>
+                        <button class="seo-subtab-btn" data-seotab="community">Community</button>
+                        <button class="seo-subtab-btn" data-seotab="aeo">AI Visibility</button>
+                        <button class="seo-subtab-btn" data-seotab="reputation">Reputation</button>
+                        <button class="seo-subtab-btn" data-seotab="listicles">Listicles</button>
+                        <button class="seo-subtab-btn" data-seotab="outreach">Outreach</button>
+                        <button class="seo-subtab-btn" data-seotab="reports">Reports</button>
+                    </div>
+
+                    <!-- SEO Chat Sub-tab -->
+                    <div id="seo-chat" class="seo-subtab-content active">
+                        <div class="chat-container">
+                            <div id="seoChatMessages" class="chat-messages">
+                                <div class="message bot-message seo-bot">
+                                    <p>Hello! I'm your Offsite SEO Specialist Agent. I can help you with link building, digital PR, community visibility, AI search optimization (AEO), reputation management, and more. What would you like to work on today?</p>
+                                </div>
+                            </div>
+                            <div class="chat-input-container">
+                                <div class="context-inputs">
+                                    <input type="text" id="seoBusinessName" placeholder="Business Name" class="small-input">
+                                    <input type="text" id="seoIndustry" placeholder="Industry/Niche" class="small-input">
+                                </div>
+                                <div class="input-group">
+                                    <textarea id="seoChatInput" placeholder="Ask me about offsite SEO, link building, digital PR, community engagement, AI visibility..." rows="3"></textarea>
+                                    <button id="seoChatSend" class="btn-primary btn-seo">Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Link Building Sub-tab -->
+                    <div id="link-building" class="seo-subtab-content">
+                        <div class="form-container">
+                            <h3>Link Building Strategy Generator</h3>
+                            <p class="form-description">Generate a comprehensive link building strategy including quick wins, editorial opportunities, digital PR ideas, and outreach templates.</p>
+                            <form id="linkBuildingForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="lbBusinessName">Business Name *</label>
+                                        <input type="text" id="lbBusinessName" placeholder="e.g., Acme Solutions" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lbIndustry">Industry/Niche *</label>
+                                        <input type="text" id="lbIndustry" placeholder="e.g., SaaS, E-commerce, Local Services" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lbTargetPages">Target Pages (one per line)</label>
+                                    <textarea id="lbTargetPages" rows="3" placeholder="e.g.,&#10;/product-page&#10;/services/consulting&#10;/blog/ultimate-guide"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lbCompetitors">Competitor Websites (one per line)</label>
+                                    <textarea id="lbCompetitors" rows="3" placeholder="e.g.,&#10;competitor1.com&#10;competitor2.com"></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary btn-seo">Generate Strategy</button>
+                            </form>
+                            <div id="linkBuildingResult" class="result-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Digital PR Sub-tab -->
+                    <div id="digital-pr" class="seo-subtab-content">
+                        <div class="form-container">
+                            <h3>Digital PR Campaign Planner</h3>
+                            <p class="form-description">Create a digital PR campaign plan with newsworthy angles, media targets, pitch templates, and timeline.</p>
+                            <form id="digitalPrForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="prBusinessName">Business Name *</label>
+                                        <input type="text" id="prBusinessName" placeholder="e.g., Acme Solutions" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prIndustry">Industry/Niche *</label>
+                                        <input type="text" id="prIndustry" placeholder="e.g., FinTech, Healthcare, Retail" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prUniqueAngle">Unique Angle / Story</label>
+                                    <textarea id="prUniqueAngle" rows="3" placeholder="What makes your business newsworthy? Any unique data, founder story, or industry insights?"></textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="prTargetAudience">Target Audience</label>
+                                        <input type="text" id="prTargetAudience" placeholder="e.g., Small business owners, Tech enthusiasts">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="prBudget">Budget Level</label>
+                                        <select id="prBudget">
+                                            <option value="low">Low (DIY/Bootstrap)</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="high">High</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-primary btn-seo">Generate Campaign Plan</button>
+                            </form>
+                            <div id="digitalPrResult" class="result-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Community Strategy Sub-tab -->
+                    <div id="community" class="seo-subtab-content">
+                        <div class="form-container">
+                            <h3>Community Visibility Strategy</h3>
+                            <p class="form-description">Build presence across Reddit, Quora, YouTube, and relevant communities with authentic, value-first engagement.</p>
+                            <form id="communityForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="commBusinessName">Business Name *</label>
+                                        <input type="text" id="commBusinessName" placeholder="e.g., Acme Solutions" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="commIndustry">Industry/Niche *</label>
+                                        <input type="text" id="commIndustry" placeholder="e.g., Fitness, Software, Home Improvement" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="commProducts">Products/Services</label>
+                                    <textarea id="commProducts" rows="2" placeholder="Describe your main products or services"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>Target Platforms</label>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="platformReddit" value="Reddit" checked> Reddit
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="platformQuora" value="Quora" checked> Quora
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="platformYouTube" value="YouTube" checked> YouTube
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="platformDiscord" value="Discord"> Discord
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="platformLinkedIn" value="LinkedIn"> LinkedIn Groups
+                                        </label>
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="platformFacebook" value="Facebook"> Facebook Groups
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn-primary btn-seo">Generate Community Strategy</button>
+                            </form>
+                            <div id="communityResult" class="result-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- AEO / AI Visibility Sub-tab -->
+                    <div id="aeo" class="seo-subtab-content">
+                        <div class="form-container">
+                            <h3>AI Visibility (AEO) Strategy</h3>
+                            <p class="form-description">Optimize for AI-powered search experiences like Google AI Overview, Bing Copilot, Perplexity, ChatGPT, and Gemini.</p>
+                            <form id="aeoForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="aeoBusinessName">Business Name *</label>
+                                        <input type="text" id="aeoBusinessName" placeholder="e.g., Acme Solutions" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="aeoIndustry">Industry/Niche *</label>
+                                        <input type="text" id="aeoIndustry" placeholder="e.g., Legal Services, EdTech" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="aeoTopics">Key Topics / Expertise Areas (one per line)</label>
+                                    <textarea id="aeoTopics" rows="3" placeholder="e.g.,&#10;small business accounting&#10;tax preparation&#10;bookkeeping software"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="aeoQueries">Target AI Search Queries (one per line)</label>
+                                    <textarea id="aeoQueries" rows="3" placeholder="e.g.,&#10;best accounting software for small business&#10;how to do quarterly taxes&#10;what is the best bookkeeper near me"></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary btn-seo">Generate AEO Strategy</button>
+                            </form>
+                            <div id="aeoResult" class="result-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Reputation Audit Sub-tab -->
+                    <div id="reputation" class="seo-subtab-content">
+                        <div class="form-container">
+                            <h3>Brand Reputation Audit</h3>
+                            <p class="form-description">Audit and improve your brand's online reputation with review management, monitoring, and recovery strategies.</p>
+                            <form id="reputationForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="repBusinessName">Business Name *</label>
+                                        <input type="text" id="repBusinessName" placeholder="e.g., Acme Solutions" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="repIndustry">Industry/Niche *</label>
+                                        <input type="text" id="repIndustry" placeholder="e.g., Restaurant, Auto Repair, Consulting" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="repKnownIssues">Known Issues or Concerns (optional)</label>
+                                    <textarea id="repKnownIssues" rows="3" placeholder="Describe any known reputation issues, negative reviews, or concerns you're aware of..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary btn-seo">Generate Reputation Audit</button>
+                            </form>
+                            <div id="reputationResult" class="result-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Listicles & Roundups Sub-tab -->
+                    <div id="listicles" class="seo-subtab-content">
+                        <div class="form-container">
+                            <h3>Listicle & Roundup Strategy</h3>
+                            <p class="form-description">Get featured in "best of" lists, comparison articles, buyer's guides, and product roundups.</p>
+                            <form id="listicleForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="listBusinessName">Business Name *</label>
+                                        <input type="text" id="listBusinessName" placeholder="e.g., Acme Solutions" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="listIndustry">Industry/Niche *</label>
+                                        <input type="text" id="listIndustry" placeholder="e.g., Project Management Software" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="listProductCategory">Product/Service Category</label>
+                                    <input type="text" id="listProductCategory" placeholder="e.g., CRM software, Meal delivery service, Fitness equipment">
+                                </div>
+                                <div class="form-group">
+                                    <label for="listDifferentiators">Key Differentiators</label>
+                                    <textarea id="listDifferentiators" rows="3" placeholder="What makes your product/service unique compared to competitors?"></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary btn-seo">Generate Listicle Strategy</button>
+                            </form>
+                            <div id="listicleResult" class="result-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Outreach Templates Sub-tab -->
+                    <div id="outreach" class="seo-subtab-content">
+                        <div class="form-container">
+                            <h3>Outreach Template Generator</h3>
+                            <p class="form-description">Generate professional outreach templates for guest posts, link requests, PR pitches, and partnerships.</p>
+                            <form id="outreachForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="outBusinessName">Business Name *</label>
+                                        <input type="text" id="outBusinessName" placeholder="e.g., Acme Solutions" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="outIndustry">Industry/Niche *</label>
+                                        <input type="text" id="outIndustry" placeholder="e.g., Marketing Agency, SaaS" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="outreachType">Outreach Type</label>
+                                    <select id="outreachType">
+                                        <option value="guest_post">Guest Post Pitch</option>
+                                        <option value="link_request">Link Request / Resource Page</option>
+                                        <option value="pr_pitch">PR / Media Pitch</option>
+                                        <option value="partnership">Partnership / Collaboration</option>
+                                        <option value="review_request">Product Review Request</option>
+                                        <option value="unlinked_mention">Unlinked Mention Reclamation</option>
+                                        <option value="podcast">Podcast Guest Pitch</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="outContext">Additional Context</label>
+                                    <textarea id="outContext" rows="3" placeholder="Any specific details about your outreach goal, target sites, or unique value proposition..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary btn-seo">Generate Templates</button>
+                            </form>
+                            <div id="outreachResult" class="result-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- SEO Reports Sub-tab -->
+                    <div id="reports" class="seo-subtab-content">
+                        <div class="form-container">
+                            <h3>Offsite SEO Report Generator</h3>
+                            <p class="form-description">Generate comprehensive offsite SEO report templates with metrics tracking, recommendations, and action items.</p>
+                            <form id="reportForm">
+                                <div class="form-group">
+                                    <label for="reportBusinessName">Business Name *</label>
+                                    <input type="text" id="reportBusinessName" placeholder="e.g., Acme Solutions" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="reportMetrics">Current Metrics (optional, JSON format or description)</label>
+                                    <textarea id="reportMetrics" rows="4" placeholder="e.g., Domain Rating: 35, Referring Domains: 150, Monthly Organic Traffic: 5000..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="reportGoals">Business Goals (optional)</label>
+                                    <textarea id="reportGoals" rows="3" placeholder="e.g., Increase domain authority to 50, gain 50 new referring domains per month, improve branded search..."></textarea>
+                                </div>
+                                <button type="submit" class="btn-primary btn-seo">Generate Report Template</button>
+                            </form>
+                            <div id="reportResult" class="result-container"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
