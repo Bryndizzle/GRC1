@@ -4,34 +4,40 @@ import os
 import sys
 
 # Add parent directory to path for imports
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, parent_dir)
 
 from gpt_wrapper import GrassrootsCoachGPT
 from seo_specialist_agent import OffsiteSEOSpecialistAgent
 
 app = Flask(__name__,
-            template_folder='../templates',
-            static_folder='../static')
+            template_folder=os.path.join(parent_dir, 'templates'),
+            static_folder=os.path.join(parent_dir, 'static'),
+            static_url_path='/static')
 CORS(app)
 
-# Initialize the GPT wrappers
-api_key = os.getenv('OPENAI_API_KEY')
-coach_gpt = GrassrootsCoachGPT(api_key=api_key) if api_key else None
-seo_agent = OffsiteSEOSpecialistAgent(api_key=api_key) if api_key else None
+# Initialize the GPT wrappers (lazy initialization to avoid errors if key not set)
+def get_coach_gpt():
+    api_key = os.environ.get('OPENAI_API_KEY')
+    if api_key:
+        return GrassrootsCoachGPT(api_key=api_key)
+    return None
+
+def get_seo_agent():
+    api_key = os.environ.get('OPENAI_API_KEY')
+    if api_key:
+        return OffsiteSEOSpecialistAgent(api_key=api_key)
+    return None
 
 @app.route('/')
 def index():
     """Serve the main coaching app interface"""
     return render_template('index.html')
 
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    """Serve static files"""
-    return send_from_directory(app.static_folder, filename)
-
 @app.route('/api/chat', methods=['POST'])
 def chat():
     """Handle chat requests with the coaching GPT"""
+    coach_gpt = get_coach_gpt()
     if not coach_gpt:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -51,6 +57,7 @@ def chat():
 @app.route('/api/training-plan', methods=['POST'])
 def training_plan():
     """Generate a training session plan"""
+    coach_gpt = get_coach_gpt()
     if not coach_gpt:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -69,6 +76,7 @@ def training_plan():
 @app.route('/api/drill-suggestion', methods=['POST'])
 def drill_suggestion():
     """Get drill suggestions based on criteria"""
+    coach_gpt = get_coach_gpt()
     if not coach_gpt:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -86,6 +94,7 @@ def drill_suggestion():
 @app.route('/api/tactical-advice', methods=['POST'])
 def tactical_advice():
     """Get tactical advice for game situations"""
+    coach_gpt = get_coach_gpt()
     if not coach_gpt:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -104,6 +113,7 @@ def tactical_advice():
 @app.route('/api/seo/chat', methods=['POST'])
 def seo_chat():
     """Handle chat requests with the SEO Specialist Agent"""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -124,6 +134,7 @@ def seo_chat():
 @app.route('/api/seo/link-building-strategy', methods=['POST'])
 def link_building_strategy():
     """Generate a comprehensive link building strategy"""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -148,6 +159,7 @@ def link_building_strategy():
 @app.route('/api/seo/digital-pr-campaign', methods=['POST'])
 def digital_pr_campaign():
     """Generate a digital PR campaign plan"""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -173,6 +185,7 @@ def digital_pr_campaign():
 @app.route('/api/seo/community-strategy', methods=['POST'])
 def community_strategy():
     """Generate a community visibility strategy for Reddit, Quora, YouTube, etc."""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -197,6 +210,7 @@ def community_strategy():
 @app.route('/api/seo/aeo-strategy', methods=['POST'])
 def aeo_strategy():
     """Generate an Answer Engine Optimization (AEO) strategy for AI visibility"""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -221,6 +235,7 @@ def aeo_strategy():
 @app.route('/api/seo/reputation-audit', methods=['POST'])
 def reputation_audit():
     """Generate a brand reputation audit and improvement plan"""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -244,6 +259,7 @@ def reputation_audit():
 @app.route('/api/seo/listicle-strategy', methods=['POST'])
 def listicle_strategy():
     """Generate a strategy for getting featured in listicles and roundups"""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -268,6 +284,7 @@ def listicle_strategy():
 @app.route('/api/seo/report', methods=['POST'])
 def seo_report():
     """Generate an offsite SEO report template and recommendations"""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -291,6 +308,7 @@ def seo_report():
 @app.route('/api/seo/outreach-templates', methods=['POST'])
 def outreach_templates():
     """Generate customized outreach templates for various SEO activities"""
+    seo_agent = get_seo_agent()
     if not seo_agent:
         return jsonify({'error': 'OpenAI API key not configured'}), 500
     try:
@@ -319,6 +337,5 @@ def health():
     """Health check endpoint"""
     return jsonify({'status': 'healthy', 'app': 'Grassroots Coach', 'agents': ['coaching', 'seo']})
 
-# For Vercel serverless
-if __name__ == '__main__':
-    app.run(debug=True)
+# Vercel handler
+handler = app
