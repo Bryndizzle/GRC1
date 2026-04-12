@@ -203,6 +203,35 @@
             color: #000;
         }
 
+        .undo-btn {
+            padding: 10px 20px;
+            border: 1px solid #666;
+            border-radius: 0;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            color: #666;
+            width: 100%;
+            margin-top: 10px;
+            opacity: 0.6;
+        }
+
+        .undo-btn:hover:not(:disabled) {
+            background: #333;
+            color: #fff;
+            border-color: #fff;
+            opacity: 1;
+        }
+
+        .undo-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.3;
+        }
+
         @keyframes goalPop {
             0% { transform: scale(0); opacity: 0; }
             50% { transform: scale(1.2); }
@@ -277,11 +306,13 @@
                         <h3>Home</h3>
                         <div class="goals-display" id="homeGoals"></div>
                         <button id="homeGoalBtn" class="goal-btn">⚽️ Goal</button>
+                        <button id="homeUndoBtn" class="undo-btn">↶ Undo</button>
                     </div>
                     <div class="team away-team">
                         <h3>Away</h3>
                         <div class="goals-display" id="awayGoals"></div>
                         <button id="awayGoalBtn" class="goal-btn">⚽️ Goal</button>
+                        <button id="awayUndoBtn" class="undo-btn">↶ Undo</button>
                     </div>
                 </div>
             </div>
@@ -354,8 +385,18 @@
         // Goal tracking functionality
         const homeGoalBtn = document.getElementById('homeGoalBtn');
         const awayGoalBtn = document.getElementById('awayGoalBtn');
+        const homeUndoBtn = document.getElementById('homeUndoBtn');
+        const awayUndoBtn = document.getElementById('awayUndoBtn');
         const homeGoalsDisplay = document.getElementById('homeGoals');
         const awayGoalsDisplay = document.getElementById('awayGoals');
+
+        let homeGoals = [];
+        let awayGoals = [];
+
+        function updateUndoButtons() {
+            homeUndoBtn.disabled = homeGoals.length === 0;
+            awayUndoBtn.disabled = awayGoals.length === 0;
+        }
 
         function addGoal(team) {
             const goalEmoji = document.createElement('span');
@@ -363,14 +404,35 @@
             goalEmoji.style.animation = 'goalPop 0.3s ease';
 
             if (team === 'home') {
+                homeGoals.push(goalEmoji);
                 homeGoalsDisplay.appendChild(goalEmoji);
             } else {
+                awayGoals.push(goalEmoji);
                 awayGoalsDisplay.appendChild(goalEmoji);
             }
+
+            updateUndoButtons();
+        }
+
+        function removeGoal(team) {
+            if (team === 'home' && homeGoals.length > 0) {
+                const lastGoal = homeGoals.pop();
+                lastGoal.remove();
+            } else if (team === 'away' && awayGoals.length > 0) {
+                const lastGoal = awayGoals.pop();
+                lastGoal.remove();
+            }
+
+            updateUndoButtons();
         }
 
         homeGoalBtn.addEventListener('click', () => addGoal('home'));
         awayGoalBtn.addEventListener('click', () => addGoal('away'));
+        homeUndoBtn.addEventListener('click', () => removeGoal('home'));
+        awayUndoBtn.addEventListener('click', () => removeGoal('away'));
+
+        // Initialize undo buttons state
+        updateUndoButtons();
 
         console.log('Football Coach Stopwatch loaded successfully!');
     </script>
