@@ -168,19 +168,24 @@
             margin-bottom: 20px;
         }
 
-        .goals-display {
-            min-height: 80px;
+        .score-display {
+            min-height: 120px;
             background: #000;
-            border: 2px solid #333;
-            padding: 20px;
+            border: 3px solid #333;
+            padding: 30px;
             margin-bottom: 20px;
-            font-size: 2em;
-            line-height: 1.5;
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
             justify-content: center;
             align-items: center;
+        }
+
+        .score-number {
+            font-size: 5em;
+            font-weight: 900;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.1em;
+            text-align: center;
         }
 
         .goal-btn {
@@ -232,11 +237,6 @@
             opacity: 0.3;
         }
 
-        @keyframes goalPop {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); opacity: 1; }
-        }
 
         footer {
             background: #000000;
@@ -257,6 +257,10 @@
 
             .stopwatch-time {
                 font-size: 2.5em;
+            }
+
+            .score-number {
+                font-size: 3em;
             }
 
             .stopwatch-controls {
@@ -303,14 +307,18 @@
             <div class="score-section">
                 <div class="team-container">
                     <div class="team home-team">
-                        <h3>Home</h3>
-                        <div class="goals-display" id="homeGoals"></div>
+                        <h3>Home Team</h3>
+                        <div class="score-display">
+                            <div class="score-number" id="homeScore">0</div>
+                        </div>
                         <button id="homeGoalBtn" class="goal-btn">⚽️ Goal</button>
                         <button id="homeUndoBtn" class="undo-btn">↶ Undo</button>
                     </div>
                     <div class="team away-team">
-                        <h3>Away</h3>
-                        <div class="goals-display" id="awayGoals"></div>
+                        <h3>Away Team</h3>
+                        <div class="score-display">
+                            <div class="score-number" id="awayScore">0</div>
+                        </div>
                         <button id="awayGoalBtn" class="goal-btn">⚽️ Goal</button>
                         <button id="awayUndoBtn" class="undo-btn">↶ Undo</button>
                     </div>
@@ -382,47 +390,44 @@
         startBtn.addEventListener('click', startStopwatch);
         resetBtn.addEventListener('click', resetStopwatch);
 
-        // Goal tracking functionality
+        // Score tracking functionality
         const homeGoalBtn = document.getElementById('homeGoalBtn');
         const awayGoalBtn = document.getElementById('awayGoalBtn');
         const homeUndoBtn = document.getElementById('homeUndoBtn');
         const awayUndoBtn = document.getElementById('awayUndoBtn');
-        const homeGoalsDisplay = document.getElementById('homeGoals');
-        const awayGoalsDisplay = document.getElementById('awayGoals');
+        const homeScoreDisplay = document.getElementById('homeScore');
+        const awayScoreDisplay = document.getElementById('awayScore');
 
-        let homeGoals = [];
-        let awayGoals = [];
+        let homeScore = 0;
+        let awayScore = 0;
 
         function updateUndoButtons() {
-            homeUndoBtn.disabled = homeGoals.length === 0;
-            awayUndoBtn.disabled = awayGoals.length === 0;
+            homeUndoBtn.disabled = homeScore === 0;
+            awayUndoBtn.disabled = awayScore === 0;
+        }
+
+        function updateScoreDisplay() {
+            homeScoreDisplay.textContent = homeScore;
+            awayScoreDisplay.textContent = awayScore;
         }
 
         function addGoal(team) {
-            const goalEmoji = document.createElement('span');
-            goalEmoji.textContent = '⚽️';
-            goalEmoji.style.animation = 'goalPop 0.3s ease';
-
             if (team === 'home') {
-                homeGoals.push(goalEmoji);
-                homeGoalsDisplay.appendChild(goalEmoji);
+                homeScore++;
             } else {
-                awayGoals.push(goalEmoji);
-                awayGoalsDisplay.appendChild(goalEmoji);
+                awayScore++;
             }
-
+            updateScoreDisplay();
             updateUndoButtons();
         }
 
         function removeGoal(team) {
-            if (team === 'home' && homeGoals.length > 0) {
-                const lastGoal = homeGoals.pop();
-                lastGoal.remove();
-            } else if (team === 'away' && awayGoals.length > 0) {
-                const lastGoal = awayGoals.pop();
-                lastGoal.remove();
+            if (team === 'home' && homeScore > 0) {
+                homeScore--;
+            } else if (team === 'away' && awayScore > 0) {
+                awayScore--;
             }
-
+            updateScoreDisplay();
             updateUndoButtons();
         }
 
