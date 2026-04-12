@@ -140,6 +140,75 @@
             color: #000;
         }
 
+        .score-section {
+            margin-top: 60px;
+            border-top: 2px solid #222;
+            padding-top: 40px;
+        }
+
+        .team-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .team {
+            flex: 1;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .team h3 {
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .goals-display {
+            min-height: 80px;
+            background: #000;
+            border: 2px solid #333;
+            padding: 20px;
+            margin-bottom: 20px;
+            font-size: 2em;
+            line-height: 1.5;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .goal-btn {
+            padding: 12px 30px;
+            border: 2px solid #fff;
+            border-radius: 0;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: transparent;
+            color: #fff;
+            width: 100%;
+        }
+
+        .goal-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        @keyframes goalPop {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
         footer {
             background: #000000;
             padding: 30px 20px;
@@ -170,6 +239,15 @@
                 width: 100%;
                 padding: 12px 20px;
             }
+
+            .team-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .team {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -191,6 +269,21 @@
             <div class="stopwatch-controls">
                 <button id="startBtn" class="stopwatch-btn btn-start">Start</button>
                 <button id="resetBtn" class="stopwatch-btn btn-reset">Reset</button>
+            </div>
+
+            <div class="score-section">
+                <div class="team-container">
+                    <div class="team home-team">
+                        <h3>Home</h3>
+                        <div class="goals-display" id="homeGoals"></div>
+                        <button id="homeGoalBtn" class="goal-btn">⚽️ Goal</button>
+                    </div>
+                    <div class="team away-team">
+                        <h3>Away</h3>
+                        <div class="goals-display" id="awayGoals"></div>
+                        <button id="awayGoalBtn" class="goal-btn">⚽️ Goal</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -257,6 +350,27 @@
 
         startBtn.addEventListener('click', startStopwatch);
         resetBtn.addEventListener('click', resetStopwatch);
+
+        // Goal tracking functionality
+        const homeGoalBtn = document.getElementById('homeGoalBtn');
+        const awayGoalBtn = document.getElementById('awayGoalBtn');
+        const homeGoalsDisplay = document.getElementById('homeGoals');
+        const awayGoalsDisplay = document.getElementById('awayGoals');
+
+        function addGoal(team) {
+            const goalEmoji = document.createElement('span');
+            goalEmoji.textContent = '⚽️';
+            goalEmoji.style.animation = 'goalPop 0.3s ease';
+
+            if (team === 'home') {
+                homeGoalsDisplay.appendChild(goalEmoji);
+            } else {
+                awayGoalsDisplay.appendChild(goalEmoji);
+            }
+        }
+
+        homeGoalBtn.addEventListener('click', () => addGoal('home'));
+        awayGoalBtn.addEventListener('click', () => addGoal('away'));
 
         console.log('Football Coach Stopwatch loaded successfully!');
     </script>
