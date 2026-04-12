@@ -188,6 +188,58 @@
             text-align: center;
         }
 
+        .goal-times {
+            margin-top: 15px;
+            padding: 15px;
+            background: #111;
+            border: 1px solid #333;
+            min-height: 50px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .goal-times h4 {
+            color: #999;
+            font-size: 0.75em;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .goal-time-item {
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            padding: 5px 0;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .goal-time-item:last-child {
+            border-bottom: none;
+        }
+
+        .goal-time-label {
+            color: #999;
+            font-size: 0.85em;
+        }
+
+        .goal-time-value {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .no-goals {
+            color: #555;
+            font-size: 0.85em;
+            font-style: italic;
+            text-align: center;
+            padding: 10px;
+        }
+
         .goal-btn {
             padding: 12px 30px;
             border: 2px solid #fff;
@@ -313,6 +365,12 @@
                         </div>
                         <button id="homeGoalBtn" class="goal-btn">⚽️ Goal</button>
                         <button id="homeUndoBtn" class="undo-btn">↶ Undo</button>
+                        <div class="goal-times">
+                            <h4>Goal Times</h4>
+                            <div id="homeGoalTimes">
+                                <div class="no-goals">No goals yet</div>
+                            </div>
+                        </div>
                     </div>
                     <div class="team away-team">
                         <h3>Away Team</h3>
@@ -321,6 +379,12 @@
                         </div>
                         <button id="awayGoalBtn" class="goal-btn">⚽️ Goal</button>
                         <button id="awayUndoBtn" class="undo-btn">↶ Undo</button>
+                        <div class="goal-times">
+                            <h4>Goal Times</h4>
+                            <div id="awayGoalTimes">
+                                <div class="no-goals">No goals yet</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -397,9 +461,13 @@
         const awayUndoBtn = document.getElementById('awayUndoBtn');
         const homeScoreDisplay = document.getElementById('homeScore');
         const awayScoreDisplay = document.getElementById('awayScore');
+        const homeGoalTimesDisplay = document.getElementById('homeGoalTimes');
+        const awayGoalTimesDisplay = document.getElementById('awayGoalTimes');
 
         let homeScore = 0;
         let awayScore = 0;
+        let homeGoalTimes = [];
+        let awayGoalTimes = [];
 
         function updateUndoButtons() {
             homeUndoBtn.disabled = homeScore === 0;
@@ -411,11 +479,33 @@
             awayScoreDisplay.textContent = awayScore;
         }
 
+        function updateGoalTimesDisplay(team) {
+            const times = team === 'home' ? homeGoalTimes : awayGoalTimes;
+            const display = team === 'home' ? homeGoalTimesDisplay : awayGoalTimesDisplay;
+
+            if (times.length === 0) {
+                display.innerHTML = '<div class="no-goals">No goals yet</div>';
+            } else {
+                display.innerHTML = times.map((time, index) => `
+                    <div class="goal-time-item">
+                        <span class="goal-time-label">Goal ${index + 1}</span>
+                        <span class="goal-time-value">${time}</span>
+                    </div>
+                `).join('');
+            }
+        }
+
         function addGoal(team) {
+            const goalTime = formatTime(stopwatchTime);
+
             if (team === 'home') {
                 homeScore++;
+                homeGoalTimes.push(goalTime);
+                updateGoalTimesDisplay('home');
             } else {
                 awayScore++;
+                awayGoalTimes.push(goalTime);
+                updateGoalTimesDisplay('away');
             }
             updateScoreDisplay();
             updateUndoButtons();
@@ -424,8 +514,12 @@
         function removeGoal(team) {
             if (team === 'home' && homeScore > 0) {
                 homeScore--;
+                homeGoalTimes.pop();
+                updateGoalTimesDisplay('home');
             } else if (team === 'away' && awayScore > 0) {
                 awayScore--;
+                awayGoalTimes.pop();
+                updateGoalTimesDisplay('away');
             }
             updateScoreDisplay();
             updateUndoButtons();
