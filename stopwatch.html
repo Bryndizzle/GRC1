@@ -129,23 +129,6 @@
             color: #fff;
         }
 
-        .btn-lap {
-            background: transparent;
-            color: #fff;
-            border-color: #fff;
-        }
-
-        .btn-lap:hover:not(:disabled) {
-            background: #fff;
-            color: #000;
-        }
-
-        .btn-lap:disabled {
-            border-color: #333;
-            color: #333;
-            cursor: not-allowed;
-        }
-
         .btn-reset {
             background: transparent;
             color: #fff;
@@ -155,82 +138,6 @@
         .btn-reset:hover {
             background: #fff;
             color: #000;
-        }
-
-        .laps-container {
-            margin-top: 40px;
-            border-top: 2px solid #222;
-            padding-top: 40px;
-        }
-
-        .laps-container h3 {
-            color: #fff;
-            margin-bottom: 30px;
-            font-size: 1.2em;
-            font-weight: 300;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .laps-list {
-            background: #000000;
-            padding: 0;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .no-laps {
-            color: #444;
-            font-style: normal;
-            text-align: center;
-            padding: 40px 20px;
-            letter-spacing: 0.05em;
-        }
-
-        .lap-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-            background: transparent;
-            margin-bottom: 0;
-            border-bottom: 1px solid #222;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lap-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .lap-number {
-            font-weight: 700;
-            color: #fff;
-            flex: 1;
-            text-align: left;
-            letter-spacing: 0.05em;
-            font-size: 0.9em;
-        }
-
-        .lap-split {
-            font-family: 'Courier New', monospace;
-            color: #fff;
-            font-weight: 700;
-            flex: 1;
-            text-align: center;
-            font-size: 1.1em;
-        }
-
-        .lap-total {
-            font-family: 'Courier New', monospace;
-            color: #666;
-            flex: 1;
-            text-align: right;
-            font-size: 0.9em;
         }
 
         footer {
@@ -263,18 +170,6 @@
                 width: 100%;
                 padding: 12px 20px;
             }
-
-            .lap-item {
-                flex-direction: column;
-                gap: 8px;
-                text-align: center;
-            }
-
-            .lap-number,
-            .lap-split,
-            .lap-total {
-                text-align: center;
-            }
         }
     </style>
 </head>
@@ -295,15 +190,7 @@
 
             <div class="stopwatch-controls">
                 <button id="startBtn" class="stopwatch-btn btn-start">Start</button>
-                <button id="lapBtn" class="stopwatch-btn btn-lap" disabled>Lap</button>
                 <button id="resetBtn" class="stopwatch-btn btn-reset">Reset</button>
-            </div>
-
-            <div class="laps-container">
-                <h3>Lap Times</h3>
-                <div id="lapsList" class="laps-list">
-                    <p class="no-laps">No lap times recorded yet</p>
-                </div>
             </div>
         </div>
 
@@ -317,14 +204,10 @@
         let stopwatchInterval = null;
         let stopwatchTime = 0;
         let isStopwatchRunning = false;
-        let lapTimes = [];
-        let lapCounter = 1;
 
         const stopwatchDisplay = document.getElementById('stopwatchTime');
         const startBtn = document.getElementById('startBtn');
-        const lapBtn = document.getElementById('lapBtn');
         const resetBtn = document.getElementById('resetBtn');
-        const lapsList = document.getElementById('lapsList');
 
         function formatTime(milliseconds) {
             const totalSeconds = Math.floor(milliseconds / 1000);
@@ -352,7 +235,6 @@
                 startBtn.textContent = 'Stop';
                 startBtn.classList.remove('btn-start');
                 startBtn.classList.add('btn-stop');
-                lapBtn.disabled = false;
             } else {
                 isStopwatchRunning = false;
                 clearInterval(stopwatchInterval);
@@ -362,53 +244,18 @@
             }
         }
 
-        function recordLap() {
-            if (isStopwatchRunning && stopwatchTime > 0) {
-                const lapTime = stopwatchTime;
-                const previousLapTime = lapTimes.length > 0 ? lapTimes[lapTimes.length - 1].time : 0;
-                const splitTime = lapTime - previousLapTime;
-
-                lapTimes.push({ time: lapTime, split: splitTime });
-
-                // Remove "no laps" message if it exists
-                const noLapsMessage = lapsList.querySelector('.no-laps');
-                if (noLapsMessage) {
-                    noLapsMessage.remove();
-                }
-
-                // Add new lap to the list (at the beginning)
-                const lapItem = document.createElement('div');
-                lapItem.className = 'lap-item';
-                lapItem.innerHTML = `
-                    <span class="lap-number">Lap ${lapCounter}</span>
-                    <span class="lap-split">${formatTime(splitTime)}</span>
-                    <span class="lap-total">${formatTime(lapTime)}</span>
-                `;
-
-                lapsList.insertBefore(lapItem, lapsList.firstChild);
-                lapCounter++;
-            }
-        }
-
         function resetStopwatch() {
             clearInterval(stopwatchInterval);
             stopwatchTime = 0;
             isStopwatchRunning = false;
-            lapTimes = [];
-            lapCounter = 1;
 
             updateStopwatchDisplay();
             startBtn.textContent = 'Start';
             startBtn.classList.remove('btn-stop');
             startBtn.classList.add('btn-start');
-            lapBtn.disabled = true;
-
-            // Clear laps list
-            lapsList.innerHTML = '<p class="no-laps">No lap times recorded yet</p>';
         }
 
         startBtn.addEventListener('click', startStopwatch);
-        lapBtn.addEventListener('click', recordLap);
         resetBtn.addEventListener('click', resetStopwatch);
 
         console.log('Football Coach Stopwatch loaded successfully!');
