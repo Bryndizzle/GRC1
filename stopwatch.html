@@ -449,6 +449,17 @@
             startBtn.textContent = 'Start';
             startBtn.classList.remove('btn-stop');
             startBtn.classList.add('btn-start');
+
+            // Reset scores and goal times
+            homeScore = 0;
+            awayScore = 0;
+            homeGoalTimes = [];
+            awayGoalTimes = [];
+
+            updateScoreDisplay();
+            updateGoalTimesDisplay('home');
+            updateGoalTimesDisplay('away');
+            updateUndoButtons();
         }
 
         startBtn.addEventListener('click', startStopwatch);
